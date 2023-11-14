@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->enum('sexo', ['Hombre', 'Mujer', 'Prefiero no decir']);
             $table->string('NUP', 10)->unique();
-            $table->string('NUE')->unique();
+            $table->string('NUE', 10)->unique();
             $table->string('RFC', 13)->unique();
             $table->string('NSS', 11)->unique();
             $table->date('fecha_nacimiento');

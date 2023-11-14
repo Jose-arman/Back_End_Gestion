@@ -35,7 +35,7 @@ class AgremiadosController extends Controller
         User::create([
                 'NUE' => $request->NUE,
                 'password' => bcrypt($request->NUE),
-                'id_rol' => 1
+                'id_rol' => 2
             ]);
             return response($agremiado, 200);
         }

@@ -38,7 +38,7 @@ Route::controller(SolicitudesController::class)->group(function () {
 });
 
 Route::controller(UsuariosController::class)->group(function () {
-    // Route::post('nuevausuario', 'newUsuario');
+     Route::post('nuevausuario', 'newUsuario');
     Route::get('usuarios', 'getUsuarios');
    // Route::delete('eliminarsolicitud/{id}', 'deleteSolicitudById');
     Route::post('login','loginUsuario');
