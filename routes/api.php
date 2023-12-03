@@ -27,6 +27,9 @@ Route::controller(AgremiadosController::class)->group(function (){
     Route::get('obtenerAgremiados', 'getAgremiado');
     Route::delete('eliminarAgremiado/{id}', 'deleteAgremiadoById');
     Route::post('agregarAgremiado', 'newAgremiado');
+    Route::get('obtenerAgremiado/{id}', 'obtenerAgremiadoPorId');
+
+
 
 });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use App\Models\solicitudes;
 
 class SolicitudesController extends Controller
@@ -44,15 +45,35 @@ class SolicitudesController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'NUE' => 'required', // Asegura que NUE sea único en la tabla
-            'ruta_archivo' => 'required',
+            'NUE' => 'required|string|max:100', // Asegura que NUE sea único en la tabla
+            'ruta_archivo' => 'required|file|max:2048|mimetypes:imagen/jpeg,image/png,application/pdf,application/msword,aplication/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ]);
+
+        if(!$request->has('expire')){
+            $request->merge(['expire' => null]);
+        }
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-        $solicitud = solicitudes::create($request->all());
-        return response()->json(['message' => 'solicitud agregado exitosamente'], 200);
+
+        $uploadedFile = $request->file('ruta_archivo');
+        $extension = $uploadedFile->getClientOriginalExtension();
+
+        $allowedExtensions = ['pdf', 'docx', 'jpeg', 'jpg', 'png'];
+
+        if (!in_array($extension, $allowedExtensions)){
+           return response()->json(['error' => 'solo se permite imagenes (jpeg,png), archivos PDF y word(docx)'], 422);
+        }
+
+        $rutaArchivo = $uploadedFile->store('public/files');
+
+        $solicitud = Solicitudes::create([
+            'NUE' => $request->NUE,
+            'ruta_archivo' => $rutaArchivo
+        ]);
+
+        return response()->json(['Solicitud' => $solicitud], 200);
     }
 
     
